@@ -56,7 +56,18 @@ public:
 	{
 		cout << last_name << " " << first_name << " " << age << " y/o" << endl;
 	}
+
+	virtual std::ostream& info(std::ostream& os)const
+	{
+		return os << last_name << " " << first_name << " " << age << " y/o";
+	}
+
 };
+
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.info(os);
+}
 
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
@@ -120,6 +131,10 @@ public:
 		Human::info();
 		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
 	}
+	std::ostream& info(std::ostream& os)const override
+	{
+		return Human::info(os) << " " << speciality << " " << group << " " << rating << " " << attendance;
+	}
 };
 
 class Teacher : public Human
@@ -163,6 +178,11 @@ public:
 		Human::info();
 		cout << speciality << " " << experience << " years" << endl;
 	}
+
+	std::ostream& info(std::ostream& os)const
+	{
+		return Human::info(os) << " " << speciality << " " << experience << " years" << endl;
+	}
 };
 
 class Graduate :public Student
@@ -195,6 +215,11 @@ public:
 		Student::info();
 		cout << subject << endl;
 	}
+	
+	std::ostream& info(std::ostream& os) const override
+	{
+		return Student::info(os) << " " << subject << endl;
+	}
 };
 
 //#define INHERITANCE_CHECK
@@ -213,17 +238,6 @@ void main()
 	Teacher teacher("White", "Walter", 50, "Chemistry", 25);
 	teacher.info();
 #endif // INHERITANCE_CHECK
-
-	/*
-	Plymorphism (Poly - много, Morphis - форма)
-	--------------------
-	AdHoc Polymorphism - Статический полиморфизм.
-	--------------------
-	Inclusion Polymorphism
-	1. Base Class Pointer - Generalization;
-	2. virtual functions;
-		VFPTR - Virtual Functions Pointers (Таблица указателей на виртуальные функции)
-	*/
 
 	//	Generalization:
 	Human* group[] =
