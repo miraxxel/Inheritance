@@ -1,4 +1,5 @@
 ﻿#include<iostream>
+#include<fstream>
 #include<string>
 using namespace std;
 
@@ -181,7 +182,7 @@ public:
 
 	std::ostream& info(std::ostream& os)const
 	{
-		return Human::info(os) << " " << speciality << " " << experience << " years" << endl;
+		return Human::info(os) << " " << speciality << " " << experience << " years";
 	}
 };
 
@@ -218,9 +219,39 @@ public:
 	
 	std::ostream& info(std::ostream& os) const override
 	{
-		return Student::info(os) << " " << subject << endl;
+		return Student::info(os) << " " << subject;
 	}
 };
+
+void Print(Human* group[], const int n)
+{
+	cout << delimiter << endl;
+	for (int i = 0; i < n; i++)
+	{
+		//group[i]->info();
+		cout << *group[i] << endl;
+		cout << delimiter << endl;
+	}
+}
+void Clear(Human* group[], const int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		delete group[i];
+	}
+}
+void Save(Human* group[], const int n, const std::string& filename)
+{
+	std::ofstream fout(filename);
+	for (int i = 0; i < n; i++)
+	{
+		fout << *group[i] << endl;
+	}
+	fout.close();
+	std::string cmd = "notepad " + filename;
+	system(cmd.c_str());
+	// c_str() возвращает содержимое объекта std::string в виде обычно C-string (NULL Terminated line)
+}
 
 //#define INHERITANCE_CHECK
 
@@ -248,15 +279,8 @@ void main()
 		new Student("Vercetty", "Tommy", 30, "Theft", "Vice", 97, 98)
 	};
 	cout << delimiter << endl;
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-	{
-		//group[i]->info();
-		cout << *group[i] << endl;
-		cout << delimiter << endl;
-	}
 
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-	{
-		delete group[i];
-	}
+	Print(group, sizeof(group) / sizeof(group[0]));
+	Save(group, sizeof(group) / sizeof(group[0]), "group.txt");
+	Clear(group, sizeof(group) / sizeof(group[0]));
 }
