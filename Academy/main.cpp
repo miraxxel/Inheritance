@@ -232,6 +232,7 @@ class Graduate :public Student
 {
 	static const int SUBJECT_WIDTH = 32;
 	std::string subject;
+
 public:
 	const std::string& get_subject()const
 	{
@@ -318,7 +319,7 @@ void main()
 	Teacher teacher("White", "Walter", 50, "Chemistry", 25);
 	teacher.info();
 #endif // INHERITANCE_CHECK
-
+	
 	//	Generalization:
 	Human* group[] =
 	{
