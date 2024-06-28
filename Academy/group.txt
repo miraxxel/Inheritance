@@ -1,4 +1,5 @@
-Pinkman Jessie 22 y/o Chemistry WW_220 70 97
-White Walter 50 y/o Chemistry 25 years
-Shreder Hank 40 y/o Criminalistic OBN 80 90 How to catch Heisenberg
-Vercetty Tommy 30 y/o Theft Vice 97 98
+Student:  Pinkman        Jessie         22             Chemistry                WW_220  70      97      
+Teacher:  White          Walter         50             Chemistry                25   
+Graduate: Shreder        Hank           40             Criminalistic            OBN     80      90      How to catch Heisenberg         
+Student:  Vercetty       Tommy          30             Theft                    Vice    97      98      
+Teacher:  Diaz           Ricardo        50             Weapons distribution     20   
