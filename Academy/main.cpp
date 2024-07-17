@@ -13,7 +13,7 @@ class Human
 	static const int HUMAN_TYPE_WIDTH = 10;
 	static const int LAST_NAME_WIDTH = 15;
 	static const int FIRST_NAME_WIDTH = 15;
-	static const int AGE_WIDTH = 15;
+	static const int AGE_WIDTH = 5;
 	std::string last_name;
 	std::string first_name;
 	unsigned int age;
@@ -398,6 +398,7 @@ Human** Load(const std::string& filename, int& n)
 		{
 			std::string type;
 			fin >> type;
+			if (type.size() < 5)continue;
 			group[i] = HumanFactory(type);
 			if (group[i])fin >> *group[i];
 			else continue;
