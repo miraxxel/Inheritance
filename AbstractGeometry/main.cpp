@@ -115,26 +115,25 @@ namespace Geometry
 			HDC hdc = GetDC(hwnd);			// 2) Получаем констекст устройства (Device Context) окна консоли
 											//	 DC - это то, на чем мы будем рисовать
 			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());	// 3) Создаем карандаш. pen рисует контур фигуры
-																//PS_SOLID - сплошная линия
-																//5 - толщина линии в пикселях
-
+																// PS_SOLID - сплошная линия
+																// 5 - толщина линии в пикселях
 			// 4) Создаем кисть
 			HBRUSH hBrush = CreateSolidBrush(get_color());
-
+			 
 			// 5) Выбираем чем и на чем рисовать:
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			//	//6) Рисуем прямоугольник:
-			//	::Rectangle(hdc, start_x, start_y, start_x + width, start_y + height);
-			//	//start_x, start_y - координаты верхнего левого угла
-			//	//800,350 - координаты нижнего правого угла.
+			// 6) Рисуем прямоугольник:
+			::Rectangle(hdc, start_x, start_y, start_x + width, start_y + height);
+			// start_x, start_y - координаты верхнего левого угла
+			// 800, 350 - координаты нижнего правого угла.
+
 			// 7) Освбождаем ресурсы:
 			DeleteObject(hPen);
-			
 			DeleteObject(hBrush);
 
-			//	ReleaseDC(hwnd, hdc);
+			ReleaseDC(hwnd, hdc); // освобождаем контекст устройства
 		}
 		double get_width()const
 		{
