@@ -1,5 +1,7 @@
+#define _USE_MATH_DEFINES
 #include<Windows.h>
 #include<iostream>
+#include<math.h>
 using namespace std;
 
 namespace Geometry
@@ -9,19 +11,44 @@ namespace Geometry
 		CONSOLE_BLUE = 0x09,
 		CONSOLE_GREEN = 0xAA,
 		CONSOLE_RED = 0xCC,
-		CONSOLE_DEFAULT = 0x07
+		CONSOLE_DEFAULT = 0x07,
+		// эти цвета занимают по 1 байт, поэтому фигуры будут красными, так как занимаемый 1 байт находится в области 4 байта
+
+		// эти цвета занимают по 4 байт 
+		RGB_RED = (0xFF0000), 
+		RGB_GREEN = (0x00FF00),
+		BLUE = 0x00FF0000,
+		RGB_WHITE = (0xFFFFFF),
+		YELLOW = 0x0000FFFF
 	};
 
+#define SHAPE_TAKE_PARAMETERS  unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color
+#define SHAPE_GIVE_PARAMETERS  start_x, start_y, line_width, color
 	class Shape
 	{
+	protected: // защищенные поля
+		// Благодаря protected, к этим полям можно будет обращаться напрямую в дочерних классах (без get и set методов)
 		Color color;
+		// Координаты, по кот. будет вывод-ся фигура:
+		unsigned int start_x; // Ось x - слева направо
+		unsigned int start_y; // Ось y - сверху вниз
+		// В любой граф.оболочке координаты задаются в писелях (пиксель - точка на экране)
+		// Начало координат - левый верхний угол всегда
+		unsigned int line_width; // толщина линии, кот. будет рис. контур фигуры
+
 	public:
-		Shape(Color color) :color(color) {}
+		Shape(SHAPE_TAKE_PARAMETERS) :color(color)
+		{
+			set_start_x(start_x);
+			set_start_y(start_y);
+			set_line_width(line_width);
+		}
 		// Класс абстрактный и от него буду наследоваться другие классы, значит и деструктор будет виртуальным (пишется ради приличия, работает по умолчанию, даже если не прописан)
 		virtual ~Shape() {} // пишутся {} чтобы указать, что деструктор создается сразу с пустой реализацией
 		virtual double get_area()const = 0;
 		virtual double get_perimeter()const = 0;
 		virtual void draw()const = 0;
+
 		Color get_color()const
 		{
 			return color;
@@ -29,6 +56,30 @@ namespace Geometry
 		void set_color(Color color)
 		{
 			this->color = color;
+		}
+		unsigned int get_start_x()const
+		{
+			return start_x;
+		}
+		unsigned int get_start_y()const
+		{
+			return start_y;
+		}
+		unsigned int get_line_width()const
+		{
+			return line_width;
+		}
+		void set_start_x(unsigned int start_x)
+		{
+			this->start_x = start_x;
+		}
+		void set_start_y(unsigned int start_y)
+		{
+			this->start_y = start_y;
+		}
+		void set_line_width(unsigned int line_width)
+		{
+			this->line_width = line_width;
 		}
 
 		virtual void info()const
@@ -39,9 +90,7 @@ namespace Geometry
 		}
 	};
 
-#define SHAPE_TAKE_PARAMETERS	unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color
-#define SHAPE_GIVE_PARAMETERS	start_x, start_y, line_width, color
-	class Square :public Shape
+	/*class Square :public Shape
 	{
 		double side; // длина стороны
 	public:
@@ -86,7 +135,7 @@ namespace Geometry
 			cout << "Длина стороны: " << side << endl;
 			Shape::info();
 		}
-	};
+	};*/
 
 	class Rectangle :public Shape
 	{
@@ -110,7 +159,8 @@ namespace Geometry
 		}
 		void draw()const override
 		{
-			HWND hwnd = GetConsoleWindow();	// 1) Получаем десткриптор окна консоли
+			HWND hwnd = FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
+			//HWND hwnd = GetConsoleWindow();	// 1) Получаем десткриптор окна консоли
 											// HWND - Handler to Window (Обработчик (иди Дескриптор - переменная в которой хранится описание чего-либо) окна)
 			HDC hdc = GetDC(hwnd);			// 2) Получаем констекст устройства (Device Context) окна консоли
 											//	 DC - это то, на чем мы будем рисовать
@@ -127,7 +177,7 @@ namespace Geometry
 			// 6) Рисуем прямоугольник:
 			::Rectangle(hdc, start_x, start_y, start_x + width, start_y + height);
 			// start_x, start_y - координаты верхнего левого угла
-			// 800, 350 - координаты нижнего правого угла.
+			// start_x + width, start_y + height - координаты нижнего правого угла.
 
 			// 7) Освбождаем ресурсы:
 			DeleteObject(hPen);
@@ -159,19 +209,81 @@ namespace Geometry
 			Shape::info();
 		}
 	};
+
+	class Square :public Rectangle
+	{
+	public:
+		Square(double side, SHAPE_TAKE_PARAMETERS):Rectangle(side, side, SHAPE_GIVE_PARAMETERS) {}
+		~Square() {}
+	};
+
+	class Circle :public Shape
+	{
+		double radius;
+	public:
+		
+		Circle(double radius, SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS)
+		{
+			set_radius(radius);
+		}
+		~Circle() {}
+		double get_radius()const
+		{
+			return radius;
+		}
+		double get_diameter()const
+		{
+			return 2 * radius;
+		}
+		double get_area()const override
+		{
+			return M_PI * radius * radius;
+		}
+		double get_perimeter()const override
+		{
+			return M_PI * get_diameter();
+		}
+		void set_radius(double radius)
+		{
+			this->radius = radius;
+		}
+
+		void draw()const override
+		{
+			HWND hwnd =	FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
+			HDC hdc = GetDC(hwnd);
+
+			// PS_SOLID - непрерывная линия
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			::Ellipse(hdc, start_x, start_y, start_x + get_diameter(), start_y + get_diameter());
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+	};
 }
 
 void main()
 {
 	setlocale(LC_ALL, "");
 	//Shape shape(Color::CONSOLE_BLUE);
-	Geometry::Square square(5, Geometry::Color::CONSOLE_RED);
+	Geometry::Square square(50, 300, 50, 5, Geometry::Color::BLUE);
 	/*cout << "Длина стороны клвадрата: " << square.get_side() << endl;
 	cout << "Площадь квадрата:  " << square.get_area() << endl;
 	cout << "Периметр квадрата: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
 
-	Geometry::Rectangle rect(15, 8, Geometry::Color::CONSOLE_RED);
+	Geometry::Rectangle rect{ 150, 80, 500, 50, 3,  Geometry::Color::BLUE };
 	rect.info();
+
+	Geometry::Circle circle(75, 700, 50, 5, Geometry::Color::YELLOW);
+	circle.info();
 }
