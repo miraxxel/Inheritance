@@ -1,4 +1,4 @@
-#define _USE_MATH_DEFINES
+п»ї#define _USE_MATH_DEFINES
 #include<Windows.h>
 #include<iostream>
 #include<math.h>
@@ -6,19 +6,19 @@ using namespace std;
 
 namespace Geometry
 {
-	enum Color	//enum (Enumeration) - это перечисление. Перечисление - это набор целочисленных констант
+	enum Color	//enum (Enumeration) - СЌС‚Рѕ РїРµСЂРµС‡РёСЃР»РµРЅРёРµ. РџРµСЂРµС‡РёСЃР»РµРЅРёРµ - СЌС‚Рѕ РЅР°Р±РѕСЂ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹С… РєРѕРЅСЃС‚Р°РЅС‚
 	{
 		CONSOLE_BLUE = 0x09,
 		CONSOLE_GREEN = 0xAA,
 		CONSOLE_RED = 0xCC,
 		CONSOLE_DEFAULT = 0x07,
-		// эти цвета занимают по 1 байт, поэтому фигуры будут красными, так как занимаемый 1 байт находится в области 4 байта
+		// СЌС‚Рё С†РІРµС‚Р° Р·Р°РЅРёРјР°СЋС‚ РїРѕ 1 Р±Р°Р№С‚, РїРѕСЌС‚РѕРјСѓ С„РёРіСѓСЂС‹ Р±СѓРґСѓС‚ РєСЂР°СЃРЅС‹РјРё, С‚Р°Рє РєР°Рє Р·Р°РЅРёРјР°РµРјС‹Р№ 1 Р±Р°Р№С‚ РЅР°С…РѕРґРёС‚СЃСЏ РІ РѕР±Р»Р°СЃС‚Рё 4 Р±Р°Р№С‚Р°
 
-		// эти цвета занимают по 4 байт 
-		RGB_RED = (0xFF0000), 
-		RGB_GREEN = (0x00FF00),
+		// СЌС‚Рё С†РІРµС‚Р° Р·Р°РЅРёРјР°СЋС‚ РїРѕ 4 Р±Р°Р№С‚ 
+		RED = 0xFF0000, 
+		RGB_GREEN = 0x00FF00,
 		BLUE = 0x00FF0000,
-		RGB_WHITE = (0xFFFFFF),
+		RGB_WHITE = 0xFFFFFF,
 		YELLOW = 0x0000FFFF
 	};
 
@@ -26,15 +26,26 @@ namespace Geometry
 #define SHAPE_GIVE_PARAMETERS  start_x, start_y, line_width, color
 	class Shape
 	{
-	protected: // защищенные поля
-		// Благодаря protected, к этим полям можно будет обращаться напрямую в дочерних классах (без get и set методов)
+	protected: // Р·Р°С‰РёС‰РµРЅРЅС‹Рµ РїРѕР»СЏ
+		// Р‘Р»Р°РіРѕРґР°СЂСЏ protected, Рє СЌС‚РёРј РїРѕР»СЏРј РјРѕР¶РЅРѕ Р±СѓРґРµС‚ РѕР±СЂР°С‰Р°С‚СЊСЃСЏ РЅР°РїСЂСЏРјСѓСЋ РІ РґРѕС‡РµСЂРЅРёС… РєР»Р°СЃСЃР°С… (Р±РµР· get Рё set РјРµС‚РѕРґРѕРІ)
 		Color color;
-		// Координаты, по кот. будет вывод-ся фигура:
-		unsigned int start_x; // Ось x - слева направо
-		unsigned int start_y; // Ось y - сверху вниз
-		// В любой граф.оболочке координаты задаются в писелях (пиксель - точка на экране)
-		// Начало координат - левый верхний угол всегда
-		unsigned int line_width; // толщина линии, кот. будет рис. контур фигуры
+		// РљРѕРѕСЂРґРёРЅР°С‚С‹, РїРѕ РєРѕС‚. Р±СѓРґРµС‚ РІС‹РІРѕРґ-СЃСЏ С„РёРіСѓСЂР°:
+		unsigned int start_x; // РћСЃСЊ x - СЃР»РµРІР° РЅР°РїСЂР°РІРѕ
+		unsigned int start_y; // РћСЃСЊ y - СЃРІРµСЂС…Сѓ РІРЅРёР·
+		// Р’ Р»СЋР±РѕР№ РіСЂР°С„.РѕР±РѕР»РѕС‡РєРµ РєРѕРѕСЂРґРёРЅР°С‚С‹ Р·Р°РґР°СЋС‚СЃСЏ РІ РїРёСЃРµР»СЏС… (РїРёРєСЃРµР»СЊ - С‚РѕС‡РєР° РЅР° СЌРєСЂР°РЅРµ)
+		// РќР°С‡Р°Р»Рѕ РєРѕРѕСЂРґРёРЅР°С‚ - Р»РµРІС‹Р№ РІРµСЂС…РЅРёР№ СѓРіРѕР» РІСЃРµРіРґР°
+		unsigned int line_width; // С‚РѕР»С‰РёРЅР° Р»РёРЅРёРё, РєРѕС‚. Р±СѓРґРµС‚ СЂРёСЃ. РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹
+
+		// РљРѕРЅСЃС‚Р°РЅС‚С‹
+		static const int MIN_START_X = 100;
+		static const int MAX_START_X = 1000;
+		static const int MIN_START_Y = 100;
+		static const int MAX_START_Y = 500;
+		static const int MIN_LINE_WIDTH = 1;
+		static const int MAX_LINE_WIDTH = 32;
+		static const int MIN_SIZE = 50;
+		static const int MAX_SIZE = 550;
+		static int count;
 
 	public:
 		Shape(SHAPE_TAKE_PARAMETERS) :color(color)
@@ -42,57 +53,58 @@ namespace Geometry
 			set_start_x(start_x);
 			set_start_y(start_y);
 			set_line_width(line_width);
+
+			count++;
 		}
-		// Класс абстрактный и от него буду наследоваться другие классы, значит и деструктор будет виртуальным (пишется ради приличия, работает по умолчанию, даже если не прописан)
-		virtual ~Shape() {} // пишутся {} чтобы указать, что деструктор создается сразу с пустой реализацией
+		// РљР»Р°СЃСЃ Р°Р±СЃС‚СЂР°РєС‚РЅС‹Р№ Рё РѕС‚ РЅРµРіРѕ Р±СѓРґСѓ РЅР°СЃР»РµРґРѕРІР°С‚СЊСЃСЏ РґСЂСѓРіРёРµ РєР»Р°СЃСЃС‹, Р·РЅР°С‡РёС‚ Рё РґРµСЃС‚СЂСѓРєС‚РѕСЂ Р±СѓРґРµС‚ РІРёСЂС‚СѓР°Р»СЊРЅС‹Рј (РїРёС€РµС‚СЃСЏ СЂР°РґРё РїСЂРёР»РёС‡РёСЏ, СЂР°Р±РѕС‚Р°РµС‚ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РґР°Р¶Рµ РµСЃР»Рё РЅРµ РїСЂРѕРїРёСЃР°РЅ)
+		virtual ~Shape() { count--; } // РїРёС€СѓС‚СЃСЏ {} С‡С‚РѕР±С‹ СѓРєР°Р·Р°С‚СЊ, С‡С‚Рѕ РґРµСЃС‚СЂСѓРєС‚РѕСЂ СЃРѕР·РґР°РµС‚СЃСЏ СЃСЂР°Р·Сѓ СЃ РїСѓСЃС‚РѕР№ СЂРµР°Р»РёР·Р°С†РёРµР№
 		virtual double get_area()const = 0;
 		virtual double get_perimeter()const = 0;
 		virtual void draw()const = 0;
 
-		Color get_color()const
-		{
-			return color;
-		}
-		void set_color(Color color)
-		{
-			this->color = color;
-		}
-		unsigned int get_start_x()const
-		{
-			return start_x;
-		}
-		unsigned int get_start_y()const
-		{
-			return start_y;
-		}
-		unsigned int get_line_width()const
-		{
-			return line_width;
-		}
+		static int get_count(){ return count; }
+
+		Color get_color()const{ return color; }
+		void set_color(Color color){ this->color = color; }
+		unsigned int get_start_x()const{ return start_x; }
+		unsigned int get_start_y()const{ return start_y; }
+		unsigned int get_line_width()const{ return line_width; }
 		void set_start_x(unsigned int start_x)
 		{
+			if (start_x < MIN_START_X)start_x = MIN_START_X;
+			if (start_x > MAX_START_X)start_x = MAX_START_X;
 			this->start_x = start_x;
 		}
 		void set_start_y(unsigned int start_y)
 		{
+			if (start_y < MIN_START_Y)start_y = MIN_START_Y;
+			if (start_y > MAX_START_Y)start_y =	MAX_START_Y;
 			this->start_y = start_y;
 		}
 		void set_line_width(unsigned int line_width)
 		{
+			if (line_width < MIN_LINE_WIDTH)line_width = MIN_LINE_WIDTH;
+			if (line_width > MAX_LINE_WIDTH)line_width = MAX_LINE_WIDTH;
 			this->line_width = line_width;
 		}
-
+		double filter_size(double size)
+		{
+			if (size < MIN_SIZE)size = MIN_SIZE;
+			if (size > MAX_SIZE)size = MAX_SIZE;
+			return size;
+		}
 		virtual void info()const
 		{
-			cout << "Площадь фигуры: " << get_area() << endl;
-			cout << "Периметр фигуры:" << get_perimeter() << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ С„РёРіСѓСЂС‹: " << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ С„РёРіСѓСЂС‹:" << get_perimeter() << endl;
 			draw();
 		}
 	};
+	int Shape::count = 0;
 
 	/*class Square :public Shape
 	{
-		double side; // длина стороны
+		double side; // РґР»РёРЅР° СЃС‚РѕСЂРѕРЅС‹
 	public:
 		Square(double side, Color color) :Shape(color)
 		{
@@ -132,7 +144,7 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны: " << side << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹: " << side << endl;
 			Shape::info();
 		}
 	};*/
@@ -148,7 +160,7 @@ namespace Geometry
 			set_height(height);
 		}
 		~Rectangle() {}
-		// реализуем чисто виртуальные методы
+		// СЂРµР°Р»РёР·СѓРµРј С‡РёСЃС‚Рѕ РІРёСЂС‚СѓР°Р»СЊРЅС‹Рµ РјРµС‚РѕРґС‹
 		double get_area()const override
 		{
 			return width * height;
@@ -160,30 +172,30 @@ namespace Geometry
 		void draw()const override
 		{
 			HWND hwnd = FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
-			//HWND hwnd = GetConsoleWindow();	// 1) Получаем десткриптор окна консоли
-											// HWND - Handler to Window (Обработчик (иди Дескриптор - переменная в которой хранится описание чего-либо) окна)
-			HDC hdc = GetDC(hwnd);			// 2) Получаем констекст устройства (Device Context) окна консоли
-											//	 DC - это то, на чем мы будем рисовать
-			HPEN hPen = CreatePen(PS_SOLID, 5, get_color());	// 3) Создаем карандаш. pen рисует контур фигуры
-																// PS_SOLID - сплошная линия
-																// 5 - толщина линии в пикселях
-			// 4) Создаем кисть
+			//HWND hwnd = GetConsoleWindow();	// 1) РџРѕР»СѓС‡Р°РµРј РґРµСЃС‚РєСЂРёРїС‚РѕСЂ РѕРєРЅР° РєРѕРЅСЃРѕР»Рё
+											// HWND - Handler to Window (РћР±СЂР°Р±РѕС‚С‡РёРє (РёРґРё Р”РµСЃРєСЂРёРїС‚РѕСЂ - РїРµСЂРµРјРµРЅРЅР°СЏ РІ РєРѕС‚РѕСЂРѕР№ С…СЂР°РЅРёС‚СЃСЏ РѕРїРёСЃР°РЅРёРµ С‡РµРіРѕ-Р»РёР±Рѕ) РѕРєРЅР°)
+			HDC hdc = GetDC(hwnd);			// 2) РџРѕР»СѓС‡Р°РµРј РєРѕРЅСЃС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° (Device Context) РѕРєРЅР° РєРѕРЅСЃРѕР»Рё
+											//	 DC - СЌС‚Рѕ С‚Рѕ, РЅР° С‡РµРј РјС‹ Р±СѓРґРµРј СЂРёСЃРѕРІР°С‚СЊ
+			HPEN hPen = CreatePen(PS_SOLID, line_width, get_color());	// 3) РЎРѕР·РґР°РµРј РєР°СЂР°РЅРґР°С€. pen СЂРёСЃСѓРµС‚ РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹
+																// PS_SOLID - СЃРїР»РѕС€РЅР°СЏ Р»РёРЅРёСЏ
+																// 5 - С‚РѕР»С‰РёРЅР° Р»РёРЅРёРё РІ РїРёРєСЃРµР»СЏС…
+			// 4) РЎРѕР·РґР°РµРј РєРёСЃС‚СЊ
 			HBRUSH hBrush = CreateSolidBrush(get_color());
 			 
-			// 5) Выбираем чем и на чем рисовать:
+			// 5) Р’С‹Р±РёСЂР°РµРј С‡РµРј Рё РЅР° С‡РµРј СЂРёСЃРѕРІР°С‚СЊ:
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			// 6) Рисуем прямоугольник:
+			// 6) Р РёСЃСѓРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє:
 			::Rectangle(hdc, start_x, start_y, start_x + width, start_y + height);
-			// start_x, start_y - координаты верхнего левого угла
-			// start_x + width, start_y + height - координаты нижнего правого угла.
+			// start_x, start_y - РєРѕРѕСЂРґРёРЅР°С‚С‹ РІРµСЂС…РЅРµРіРѕ Р»РµРІРѕРіРѕ СѓРіР»Р°
+			// start_x + width, start_y + height - РєРѕРѕСЂРґРёРЅР°С‚С‹ РЅРёР¶РЅРµРіРѕ РїСЂР°РІРѕРіРѕ СѓРіР»Р°.
 
-			// 7) Освбождаем ресурсы:
+			// 7) РћСЃРІР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹:
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
 
-			ReleaseDC(hwnd, hdc); // освобождаем контекст устройства
+			ReleaseDC(hwnd, hdc); // РѕСЃРІРѕР±РѕР¶РґР°РµРј РєРѕРЅС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР°
 		}
 		double get_width()const
 		{
@@ -195,17 +207,17 @@ namespace Geometry
 		}
 		void set_width(double width)
 		{
-			this->width = width;
+			this->width = filter_size(width);
 		}
 		void set_height(double height)
 		{
-			this->height = height;
+			this->height = filter_size(height);
 		}
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Ширина: " << get_width() << endl;
-			cout << "Высота: " << get_height() << endl;
+			cout << "РЁРёСЂРёРЅР°: " << get_width() << endl;
+			cout << "Р’С‹СЃРѕС‚Р°: " << get_height() << endl;
 			Shape::info();
 		}
 	};
@@ -245,7 +257,7 @@ namespace Geometry
 		}
 		void set_radius(double radius)
 		{
-			this->radius = radius;
+			this->radius = filter_size(radius);
 		}
 
 		void draw()const override
@@ -253,7 +265,7 @@ namespace Geometry
 			HWND hwnd =	FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
 			HDC hdc = GetDC(hwnd);
 
-			// PS_SOLID - непрерывная линия
+			// PS_SOLID - РЅРµРїСЂРµСЂС‹РІРЅР°СЏ Р»РёРЅРёСЏ
 			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
 			HBRUSH hBrush = CreateSolidBrush(color);
 
@@ -267,6 +279,124 @@ namespace Geometry
 
 			ReleaseDC(hwnd, hdc);
 		}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			Shape::info();
+		}
+	};
+
+	class Triangle :public Shape
+	{
+	public:
+		virtual double get_height()const = 0;
+		Triangle(SHAPE_TAKE_PARAMETERS):Shape(SHAPE_GIVE_PARAMETERS) {}
+		~Triangle() {}
+
+		void info()const override
+		{
+			cout << "Р’С‹СЃРѕС‚Р° С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°: " << get_height() << endl;
+			Shape::info();
+		}
+	};
+	class EquilateralTriangle :public Triangle
+	{
+		double side;
+	public: 
+		double get_side()const{ return side; }
+		void set_side(double side){	this->side = filter_size(side); }
+		double get_height()const{ return sqrt(side * side - side / 2 * side / 2); }
+		double get_area()const override{ return side / 2 * get_height(); }
+		double get_perimeter()const override{ return side * 3; }
+		void draw()const override
+		{
+			HWND hwnd = FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			POINT apt[] =
+			{
+				// СЃРѕР·РґР°РµРј РѕР±СЉРµРєС‚ СЃС‚СЂСѓРєС‚СѓСЂ:
+				{start_x, start_y + side},
+				{start_x + side, start_y + side},
+				{start_x + side/2, start_y + side - get_height()}
+			};
+
+			// (РїР»РѕСЃРєР°СЏ С„РёРіСѓСЂР°)
+			::Polygon(hdc, apt, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+
+		EquilateralTriangle(double side, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS)
+		{
+			set_side(side);
+		}
+		~EquilateralTriangle() {}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹:\t " << side << endl;
+			Triangle::info();
+		}
+	};
+
+	class RightTriangle :public Triangle
+	{
+		double side;
+	public:
+		double get_side()const { return side; }
+		void set_side(double side) { this->side = filter_size(side); }
+		double get_height()const { return sqrt(side * side - side / 2 * side / 2); }
+		double get_area()const override { return side / 2 * get_height(); }
+		double get_perimeter()const override { return side * 3; }
+		void draw()const override
+		{
+			HWND hwnd = FindWindow(NULL, "Inheritance - Microsoft Visual Studio");
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			POINT apt[] =
+			{
+				// СЃРѕР·РґР°РµРј РѕР±СЉРµРєС‚ СЃС‚СЂСѓРєС‚СѓСЂ:
+				{start_x, start_y + side},
+				{start_x + side, start_y + side},
+				{start_x + side, start_y + side - get_height()}
+			};
+
+			// (РїР»РѕСЃРєР°СЏ С„РёРіСѓСЂР°)
+			::Polygon(hdc, apt, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+
+		RightTriangle(double side, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS)
+		{
+			set_side(side);
+		}
+		~RightTriangle() {}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹:\t " << side << endl;
+			Triangle::info();
+		}
 	};
 }
 
@@ -275,9 +405,9 @@ void main()
 	setlocale(LC_ALL, "");
 	//Shape shape(Color::CONSOLE_BLUE);
 	Geometry::Square square(50, 300, 50, 5, Geometry::Color::BLUE);
-	/*cout << "Длина стороны клвадрата: " << square.get_side() << endl;
-	cout << "Площадь квадрата:  " << square.get_area() << endl;
-	cout << "Периметр квадрата: " << square.get_perimeter() << endl;
+	/*cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ РєР»РІР°РґСЂР°С‚Р°: " << square.get_side() << endl;
+	cout << "РџР»РѕС‰Р°РґСЊ РєРІР°РґСЂР°С‚Р°:  " << square.get_area() << endl;
+	cout << "РџРµСЂРёРјРµС‚СЂ РєРІР°РґСЂР°С‚Р°: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
 
@@ -286,4 +416,13 @@ void main()
 
 	Geometry::Circle circle(75, 700, 50, 5, Geometry::Color::YELLOW);
 	circle.info();
+
+	Geometry::EquilateralTriangle e_triangle(100, 200, 200, 5, Geometry::Color::RGB_GREEN);
+	e_triangle.info();
+	
+	Geometry::RightTriangle r_triangle(100, 350, 200, 5, Geometry::Color::RGB_WHITE);
+	r_triangle.info();
+
+	cout << "РљРѕР»-РІРѕ С„РёРіСѓСЂ: " << e_triangle.get_count() << endl; // РјРѕР¶РЅРѕ С‚Р°Рє РІС‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґ
+	cout << "РљРѕР»-РІРѕ С„РёРіСѓСЂ: " << Geometry::Shape::get_count() << endl; // РЅРѕ СЌС‚Рѕ СЃС‡РёС‚Р°РµС‚СЃСЏ Р±РѕР»РµРµ РїСЂР°РІРёР»СЊРЅС‹Рј
 }
